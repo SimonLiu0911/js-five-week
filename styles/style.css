@@ -1,0 +1,62 @@
+body {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+footer {
+    background-color: white;
+}
+
+/* Index Page start */
+
+#header .navbar_border {
+    border-bottom: 1px solid black;
+}
+
+#header .navbar_border div {
+    font-size: 1.25rem;
+    padding: 5px 0;
+    margin: 0 auto;
+}
+
+/* Index Page end */
+
+/* Cart Component start */
+
+#totalcart {
+    float: right;
+}
+
+#totalcart .totalcart__table {
+    font-size: 30px;
+}
+
+.clearBoth {
+    clear: both;
+}
+
+#totalcart .totalcart__table .border-bottom {
+    border-color: black !important;
+}
+
+/* Cart Component end */
+
+/* Checkout Page start */
+
+/* #CheckingPage {
+    height: 100vh;
+} */
+
+#CheckingPage .col-md-5 {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+.ReturnToCart {
+    color: #545454;
+}
+
+.ReturnToCart:hover {
+    text-decoration: none;
+    color: black;
+}
+
+/* Checkout Page end */

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js作品實戰班-2020夏季-第五週作業</title>
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- fontawesome -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css' />
+    <!-- Vue-loading -->
+    <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- Vue Loading -->
+        <loading :active.sync="isLoading"></loading>
+
+        <!-- Header -->
+        <header id="header">
+            <nav class="navbar navbar-light bg-white navbar_border">
+                <div class="container">
+                    <div>
+                        Checking Information
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div id="CheckingPage" class="container">
+            <div class="row">
+                <div class="col-md-7 p-5">
+                    <h3 class="text-center border-bottom mb-4 pb-3">Contact Information</h3>
+                    <validation-observer v-slot="{ invalid }">
+                        <form @submit.prevent="createOrder">
+                            <div class="form-group">
+                                <validation-provider rules="required" v-slot="{errors, classes}">
+                                    <label for="username">Name</label>
+                                    <input id="username" class="form-control" type="text" v-model="form.name"
+                                        :class="classes" name="User Name" placeholder="User Name">
+                                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                                </validation-provider>
+                            </div>
+                            <div class="form-group">
+                                <validation-provider rules="email|required" v-slot="{errors, classes}">
+                                    <label for="email">Email</label>
+                                    <input id="email" class="form-control" type="email" v-model="form.email"
+                                        name="Email" :class="classes" placeholder="Email Address">
+                                    <span class="invalid-feedback">{{errors[0]}}</span>
+                                </validation-provider>
+                            </div>
+                            <div class="form-group">
+                                <validation-provider rules="min:8|required" v-slot="{errors, classes}">
+                                    <label for="tel">Phone Number</label>
+                                    <input id="tel" class="form-control" :class="classes" type="tel" v-model="form.tel"
+                                        name="Phone Number" placeholder="Phone Number">
+                                    <span class="invalid-feedback">{{errors[0]}}</span>
+                                </validation-provider>
+                            </div>
+                            <div class="form-group">
+                                <validation-provider rules="required" v-slot="{errors, classes}">
+                                    <label for="address">Address</label>
+                                    <input id="address" class="form-control" :class="classes" type="text"
+                                        v-model="form.address" placeholder="Address">
+                                    <span class="invalid-feedback">{{errors[0]}}</span>
+                                </validation-provider>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Payment</label>
+                                <select class="form-control" v-model="form.payment" required>
+                                    <option value="" selected disabled>
+                                        Payment
+                                    </option>
+                                    <option value="WebATM">
+                                        WebATM
+                                    </option>
+                                    <option value="ATM">
+                                        ATM
+                                    </option>
+                                    <option value="CVS">
+                                        CVS
+                                    </option>
+                                    <option value="Barcode">
+                                        Barcode
+                                    </option>
+                                    <option value="Credit">
+                                        Credit
+                                    </option>
+                                    <option value="ApplePay">
+                                        ApplePay
+                                    </option>
+                                    <option value="GooglePay">
+                                        GooglePay
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" class="form-control" cols="30" rows="3">
+                                    </textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-dark btn-block rounded-0 my-2"
+                                    :disabled="invalid">CHECK</button>
+                                <div>
+                                    <a href="index.html" class="ReturnToCart">
+                                        <i class="fas fa-chevron-left"></i>
+                                        Return to Cart
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </validation-observer>
+                </div>
+                <div class="col-md-5 p-5">
+                    <table class="table border-bottom mb-0 text-center">
+                        <thead>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in cart">
+                                <td class="align-middle">
+                                    {{item.product.title}}
+                                </td>
+                                <td class="align-middle">
+                                    {{item.quantity}}
+                                </td>
+                                <td class="align-middle">
+                                    {{item.product.price | money}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="input-group py-3 border-bottom">
+                        <input type="text" value="" class="form-control rounded-0" placeholder="Discount Code">
+                        <button type="button" class="btn btn-dark rounded-0" disabled>APPLY</button>
+                    </div>
+                    <div id="totalcart" class="my-3">
+                        <div class="totalcart__table">
+                            <table class="border-bottom">
+                                <tbody>
+                                    <tr>
+                                        <th width="150px">Subtotal</th>
+                                        <td><span>{{ cartTotal | money}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 完成訂單 Modal start -->
+        <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Completed</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Congratulations!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 完成訂單 Modal end -->
+
+        <!-- footer -->
+        <Footer-bottom></Footer-bottom>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <!-- Vue Loading -->
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Vue CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- Vee Validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.3.0/vee-validate.full.min.js"></script>
+    <script src="scripts/all.js" type="module"></script>
+</body>
+
+</html>
